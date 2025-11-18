@@ -62,4 +62,4 @@ Asked: "How do I install Maven so that I can use the command 'mvn test'"
 Modified: Installed the required package and added to path to allow for testing
 Verified: Ran the tests afterwards using several tests.
 
-## Time Spent: ~10 hours
+## Time Spent: ~12 hours

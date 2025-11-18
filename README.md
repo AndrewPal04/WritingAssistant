@@ -27,4 +27,4 @@ Singleton: One shared API client instance
 Observer: UI updates after synchronous API responses
 
 ## Demo:
-[In process of recording demo]
+Youtube link: https://youtu.be/-viQrVCmisA
