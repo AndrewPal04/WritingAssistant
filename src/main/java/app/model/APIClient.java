@@ -1,10 +1,12 @@
 package app.model;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Properties;
 
 /**
  * Singleton responsible for low-level HTTP communication with the OpenAI API.
@@ -22,13 +24,30 @@ public class APIClient {
     private APIClient() {
         this.httpClient = HttpClient.newHttpClient();
 
-        // DO NOT crash here — allow GUI to load and let controller handle the error
+        // 1) Try environment variable
         String key = System.getenv("OPENAI_API_KEY");
 
+        // 2) If not set, try config.properties on the classpath
         if (key == null || key.isBlank()) {
-            this.apiKey = null;  // Mark as missing
+            try (InputStream input = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("config.properties")) {
+
+                if (input != null) {
+                    Properties props = new Properties();
+                    props.load(input);
+                    key = props.getProperty("OPENAI_API_KEY");
+                }
+            } catch (IOException e) {
+                // Ignore here; we'll treat missing key below
+            }
+        }
+
+        // 3) If still missing or blank, mark as null so controller can handle it
+        if (key == null || key.isBlank()) {
+            this.apiKey = null;
         } else {
-            this.apiKey = key;
+            this.apiKey = key.trim();
         }
     }
 
@@ -55,7 +74,8 @@ public class APIClient {
 
         if (apiKey == null) {
             throw new IllegalStateException(
-                "No API key available. Please set the OPENAI_API_KEY environment variable."
+                "No API key available. Please set the OPENAI_API_KEY environment variable " +
+                "or create a config.properties file with OPENAI_API_KEY defined."
             );
         }
 

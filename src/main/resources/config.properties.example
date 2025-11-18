@@ -1,0 +1,4 @@
+# Example configuration file for WriteWise
+# Copy this to config.properties and insert your real key.
+
+OPENAI_API_KEY=YOUR_API_KEY_HERE
