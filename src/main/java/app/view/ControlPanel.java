@@ -41,12 +41,17 @@ public class ControlPanel extends JPanel {
                 @Override
                 public void onError(String errorMessage) {
                     statusBar.setStatus("Error");
+                    // Show the error directly in the Output panel
+                    editorPanel.setOutputText(errorMessage);
+                    // If you still want a popup, you can uncomment this:
+                    /*
                     JOptionPane.showMessageDialog(
                             ControlPanel.this,
                             errorMessage,
                             "Error",
                             JOptionPane.ERROR_MESSAGE
                     );
+                    */
                 }
             });
         });

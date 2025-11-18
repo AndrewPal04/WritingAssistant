@@ -21,13 +21,14 @@ public class APIClient {
 
     private APIClient() {
         this.httpClient = HttpClient.newHttpClient();
-        this.apiKey = System.getenv("OPENAI_API_KEY");
 
-        if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException(
-                    "OPENAI_API_KEY environment variable is not set. " +
-                    "Set it before running the application."
-            );
+        // DO NOT crash here — allow GUI to load and let controller handle the error
+        String key = System.getenv("OPENAI_API_KEY");
+
+        if (key == null || key.isBlank()) {
+            this.apiKey = null;  // Mark as missing
+        } else {
+            this.apiKey = key;
         }
     }
 
@@ -39,11 +40,24 @@ public class APIClient {
     }
 
     /**
+     * Allows other classes (MainController) to detect missing key.
+     */
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    /**
      * Sends a JSON request body to the OpenAI Chat Completions endpoint
-     * and returns the raw JSON response as a String.
+     * and returns the raw JSON response.
      */
     public String sendChatCompletionRequest(String jsonBody)
             throws IOException, InterruptedException {
+
+        if (apiKey == null) {
+            throw new IllegalStateException(
+                "No API key available. Please set the OPENAI_API_KEY environment variable."
+            );
+        }
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(OPENAI_URL))

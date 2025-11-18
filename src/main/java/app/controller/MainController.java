@@ -8,6 +8,7 @@ import app.model.strategy.CreativeStrategy;
 import app.model.strategy.ProfessionalStrategy;
 import app.model.strategy.WritingStrategy;
 import app.service.APIService;
+import app.model.APIClient;
 
 /**
  * Main controller that coordinates between the view and the service/model.
@@ -25,8 +26,26 @@ public class MainController {
      * modeName is a simple String for now ("Creative", "Professional", "Academic").
      */
     public void handleGenerate(String userInput, String modeName, ResponseListener listener) {
+
+        // Basic input validation
+        if (userInput == null || userInput.trim().isEmpty()) {
+            listener.onError("Input cannot be empty. Please enter some text first.");
+            return;
+        }
+
+        // Check for missing API key BEFORE making any request
+        if (APIClient.getInstance().getApiKey() == null) {
+            listener.onError(
+                "Error: No valid API key found.\n" +
+                "Please set the OPENAI_API_KEY environment variable."
+            );
+            return;
+        }
+
+        // Normal flow: select strategy + build request + generate
         WritingStrategy strategy = selectStrategy(modeName);
         WritingRequest request = WritingRequestFactory.fromStrategy(strategy, userInput);
+
         apiService.generateTextAsync(request, listener);
     }
 
