@@ -4,7 +4,6 @@ import app.model.WritingRequest;
 import app.model.WritingRequestFactory;
 import app.model.WritingResponse;
 import app.model.domain.Session;
-import app.model.observer.ResponseListener;
 import app.model.repository.SessionRepository;
 import app.model.strategy.AcademicStrategy;
 import app.model.strategy.CreativeStrategy;
@@ -28,7 +27,6 @@ public class MainController {
         return apiService;
     }
 
-    // Allow MainFrame to give us the UI history panel
     public void setHistoryPanel(HistoryPanel panel) {
         this.historyPanel = panel;
 
@@ -36,7 +34,6 @@ public class MainController {
             historyPanel.loadSessions(repo.loadAll());
         } catch (Exception ignored) {}
     }
-
     public void handleGenerate(String userInput, String modeName) {
 
         if (userInput == null || userInput.trim().isEmpty()) {
@@ -52,39 +49,9 @@ public class MainController {
         WritingStrategy strategy = selectStrategy(modeName);
         WritingRequest request = WritingRequestFactory.fromStrategy(strategy, userInput);
 
-        apiService.generateTextAsync(request, new ResponseListener() {
-
-            @Override
-            public void onRequestStarted() {
-                apiService.dispatchStart();
-            }
-
-            @Override
-            public void onRequestComplete(WritingResponse response) {
-
-                try {
-                    Session s = new Session(
-                            userInput,
-                            response.getOutput(),
-                            strategy.getModeName()
-                    );
-                    repo.save(s);
-
-                    if (historyPanel != null) {
-                        historyPanel.addSession(s);
-                    }
-
-                } catch (Exception ignored) {}
-
-                apiService.dispatchSuccess(response);
-            }
-
-            @Override
-            public void onRequestError(String message) {
-                apiService.dispatchError(message);
-            }
-        });
+        apiService.generateTextStream(request);
     }
+
 
     private WritingStrategy selectStrategy(String modeName) {
         if ("Professional".equalsIgnoreCase(modeName))

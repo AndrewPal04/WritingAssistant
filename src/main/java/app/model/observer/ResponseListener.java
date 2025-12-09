@@ -9,4 +9,6 @@ public interface ResponseListener {
     void onRequestComplete(WritingResponse response);
 
     void onRequestError(String errorMessage);
+
+    default void onStreamChunk(String chunk){}
 }

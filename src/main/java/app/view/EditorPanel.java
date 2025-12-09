@@ -3,9 +3,6 @@ package app.view;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Panel holding input and output text areas.
- */
 public class EditorPanel extends JPanel {
 
     private final JTextArea inputArea;
@@ -18,14 +15,8 @@ public class EditorPanel extends JPanel {
         outputArea = new JTextArea();
         outputArea.setEditable(false);
 
-        JScrollPane inputScroll = new JScrollPane(inputArea);
-        JScrollPane outputScroll = new JScrollPane(outputArea);
-
-        inputScroll.setBorder(BorderFactory.createTitledBorder("Input"));
-        outputScroll.setBorder(BorderFactory.createTitledBorder("Output"));
-
-        add(inputScroll);
-        add(outputScroll);
+        add(new JScrollPane(inputArea));
+        add(new JScrollPane(outputArea));
     }
 
     public String getInputText() {
@@ -34,5 +25,9 @@ public class EditorPanel extends JPanel {
 
     public void setOutputText(String text) {
         outputArea.setText(text);
+    }
+
+    public void appendOutputText(String text) {
+        outputArea.append(text);
     }
 }

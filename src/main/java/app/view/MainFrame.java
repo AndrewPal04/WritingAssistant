@@ -27,26 +27,32 @@ public class MainFrame extends JFrame implements ResponseListener {
         statusBar = new StatusBar();
         historyPanel = new HistoryPanel();
 
-        ControlPanel controlPanel = new ControlPanel(controller, editorPanel, statusBar);
+        ControlPanel controlPanel =
+                new ControlPanel(controller, editorPanel, statusBar);
 
         add(controlPanel, BorderLayout.NORTH);
         add(editorPanel, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
         add(historyPanel, BorderLayout.EAST);
 
-        // Let the controller know about UI hooks
         controller.getApiService().addListener(this);
         controller.setHistoryPanel(historyPanel);
     }
 
     @Override
     public void onRequestStarted() {
-        statusBar.setMessage("Generating...");
+        editorPanel.setOutputText("");
+        statusBar.setMessage("Generating (streaming)...");
+    }
+
+    // NEW — streaming chunk
+    @Override
+    public void onStreamChunk(String text) {
+        editorPanel.appendOutputText(text);
     }
 
     @Override
     public void onRequestComplete(WritingResponse response) {
-        editorPanel.setOutputText(response.getOutput());
         statusBar.setMessage("Done");
     }
 
