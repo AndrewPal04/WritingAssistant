@@ -18,13 +18,12 @@
 - OpenAI API integration
 - Asynchronous operations
 - Error handling
-- 14+ JUnit tests
 
 ## Design Patterns
 Strategy: Different writing styles
 Factory: Centralized creation of writing requests
-Singleton: One shared API client instance
-Observer: UI updates after synchronous API responses
+Singleton: APIClient ensures a single HTTP client + API key loader
+Observer: Response Listener recieves onRequestStarted(), onRequestComplete(), onRequestError(String). UI reacts automatically.
 
 ## Demo:
 Youtube link: https://youtu.be/-viQrVCmisA
