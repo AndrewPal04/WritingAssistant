@@ -2,7 +2,6 @@ package app.controller;
 
 import app.model.WritingRequest;
 import app.model.WritingRequestFactory;
-import app.model.WritingResponse;
 import app.model.domain.Session;
 import app.model.repository.SessionRepository;
 import app.model.strategy.AcademicStrategy;
@@ -34,6 +33,7 @@ public class MainController {
             historyPanel.loadSessions(repo.loadAll());
         } catch (Exception ignored) {}
     }
+
     public void handleGenerate(String userInput, String modeName) {
 
         if (userInput == null || userInput.trim().isEmpty()) {
@@ -49,9 +49,35 @@ public class MainController {
         WritingStrategy strategy = selectStrategy(modeName);
         WritingRequest request = WritingRequestFactory.fromStrategy(strategy, userInput);
 
-        apiService.generateTextStream(request);
-    }
+        // --- STREAMING MODE ---
+        apiService.generateTextStream(
+                request,
 
+                chunk -> {
+                },
+
+                finalText -> {
+                    try {
+                        Session s = new Session(
+                                userInput,
+                                finalText,
+                                strategy.getModeName()
+                        );
+
+                        repo.save(s);
+
+                        if (historyPanel != null)
+                            historyPanel.addSession(s);
+
+                    } catch (Exception ignored) {}
+
+                    apiService.dispatchSuccess(finalText);
+                },
+
+                // ERROR CALLBACK
+                error -> apiService.dispatchError(error)
+        );
+    }
 
     private WritingStrategy selectStrategy(String modeName) {
         if ("Professional".equalsIgnoreCase(modeName))
