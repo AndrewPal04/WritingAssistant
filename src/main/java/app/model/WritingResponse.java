@@ -1,17 +1,14 @@
 package app.model;
 
-/**
- * Represents a response returned by the writing API.
- */
 public class WritingResponse {
 
-    private final String content;
+    private final String output;
 
-    public WritingResponse(String content) {
-        this.content = content;
+    public WritingResponse(String output) {
+        this.output = output;
     }
 
-    public String getContent() {
-        return content;
+    public String getOutput() {
+        return output;
     }
 }

@@ -10,4 +10,6 @@ public interface WritingStrategy {
     double getTemperature();
 
     int getMaxTokens();
+    
+    String getModeName();
 }

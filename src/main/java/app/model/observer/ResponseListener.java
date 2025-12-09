@@ -2,12 +2,11 @@ package app.model.observer;
 
 import app.model.WritingResponse;
 
-/**
- * Observer/listener interface for async responses.
- */
 public interface ResponseListener {
 
-    void onSuccess(WritingResponse response);
+    void onRequestStarted();
 
-    void onError(String errorMessage);
+    void onRequestComplete(WritingResponse response);
+
+    void onRequestError(String errorMessage);
 }

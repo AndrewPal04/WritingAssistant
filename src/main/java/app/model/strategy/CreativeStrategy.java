@@ -9,6 +9,11 @@ public class CreativeStrategy implements WritingStrategy {
                Rewrite or continue this text in a vivid, imaginative style:
                """ + userInput;
     }
+    @Override
+    public String getModeName() {
+        return "Creative";
+}
+
 
     @Override
     public double getTemperature() {

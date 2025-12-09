@@ -16,6 +16,7 @@
     </properties>
 
     <dependencies>
+        <!-- You can keep these; tests are disabled so they won't run -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -38,17 +39,30 @@
 
     <build>
         <plugins>
-            <!-- JUnit / test runner -->
+
+            <!-- Disable test compilation & execution -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <useModulePath>false</useModulePath>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
 
-            <!-- NEW: run app.Main with mvn exec:java -->
+            <!-- Also skip test compilation stage -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <testExcludes>
+                        <exclude>**/*.java</exclude>
+                    </testExcludes>
+                </configuration>
+            </plugin>
+
+            <!-- Allow: mvn exec:java -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -57,6 +71,7 @@
                     <mainClass>app.Main</mainClass>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

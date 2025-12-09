@@ -1,0 +1,15 @@
+{ "input": "You are a professional writing assistant.
+Rewrite or continue this text in a clear, concise, and formal tone:
+write an email to my boss about being late", "output": "Subject: Notification of Delay
+
+Dear [Boss's Name],
+
+I hope this message finds you well. I am writing to inform you that I will be arriving late to the office today due to [brief explanation of the reason, e.g., unexpected traffic, a personal matter]. I anticipate being there by [expected arrival time].
+
+I apologize for any inconvenience this may cause and appreciate your understanding.
+
+Thank you for your consideration.
+
+Best regards,  
+[Your Name]  
+[Your Position]", "mode": "Professional" }

@@ -9,6 +9,10 @@ public class ProfessionalStrategy implements WritingStrategy {
                Rewrite or continue this text in a clear, concise, and formal tone:
                """ + userInput;
     }
+    @Override
+    public String getModeName() {
+        return "Professional";
+    }
 
     @Override
     public double getTemperature() {

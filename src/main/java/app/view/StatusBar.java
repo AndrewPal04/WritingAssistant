@@ -3,9 +3,6 @@ package app.view;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Simple status bar at the bottom of the window.
- */
 public class StatusBar extends JPanel {
 
     private final JLabel statusLabel;
@@ -18,5 +15,9 @@ public class StatusBar extends JPanel {
 
     public void setStatus(String status) {
         statusLabel.setText(status);
+    }
+
+    public void setMessage(String message) {
+        statusLabel.setText(message);
     }
 }

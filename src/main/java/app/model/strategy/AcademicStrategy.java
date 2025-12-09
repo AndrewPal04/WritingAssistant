@@ -9,6 +9,10 @@ public class AcademicStrategy implements WritingStrategy {
                Rewrite or continue this text in an academic style with a clear thesis and logical structure:
                """ + userInput;
     }
+    @Override
+    public String getModeName() {
+        return "Academic";
+    }
 
     @Override
     public double getTemperature() {

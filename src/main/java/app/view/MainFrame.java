@@ -1,14 +1,13 @@
 package app.view;
 
 import app.controller.MainController;
+import app.model.WritingResponse;
+import app.model.observer.ResponseListener;
 
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Main application window.
- */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ResponseListener {
 
     private final MainController controller;
     private final EditorPanel editorPanel;
@@ -30,5 +29,23 @@ public class MainFrame extends JFrame {
         add(controlPanel, BorderLayout.NORTH);
         add(editorPanel, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
+
+        controller.getApiService().addListener(this);
+    }
+
+    @Override
+    public void onRequestStarted() {
+        statusBar.setMessage("Generating...");
+    }
+
+    @Override
+    public void onRequestComplete(WritingResponse response) {
+        editorPanel.setOutputText(response.getOutput());
+        statusBar.setMessage("Done");
+    }
+
+    @Override
+    public void onRequestError(String message) {
+        statusBar.setMessage("Error: " + message);
     }
 }
