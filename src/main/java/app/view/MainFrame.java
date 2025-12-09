@@ -12,25 +12,31 @@ public class MainFrame extends JFrame implements ResponseListener {
     private final MainController controller;
     private final EditorPanel editorPanel;
     private final StatusBar statusBar;
+    private final HistoryPanel historyPanel;
 
     public MainFrame(MainController controller) {
         super("WriteWise - AI Writing Assistant");
         this.controller = controller;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 600);
+        setSize(1200, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         editorPanel = new EditorPanel();
         statusBar = new StatusBar();
+        historyPanel = new HistoryPanel();
+
         ControlPanel controlPanel = new ControlPanel(controller, editorPanel, statusBar);
 
         add(controlPanel, BorderLayout.NORTH);
         add(editorPanel, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
+        add(historyPanel, BorderLayout.EAST);
 
+        // Let the controller know about UI hooks
         controller.getApiService().addListener(this);
+        controller.setHistoryPanel(historyPanel);
     }
 
     @Override
