@@ -19,6 +19,12 @@
 - Asynchronous operations
 - Error handling
 
+## Bonus Features
+- Built-In session history system
+- Session history panel in the UI
+- Clean JSON-Based Storage of User Sessions
+
+
 ## Design Patterns
 Strategy: Different writing styles
 Factory: Centralized creation of writing requests
